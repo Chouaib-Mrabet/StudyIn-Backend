@@ -1,4 +1,4 @@
-import { StudentEntity } from './entitiers/student.entity';
+import { StudentEntity } from './entities/student.entity';
 import { Repository } from 'typeorm';
 export declare class StudentsService {
     private studentRepository;

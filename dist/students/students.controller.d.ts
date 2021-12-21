@@ -1,5 +1,5 @@
 import { StudentsService } from './students.service';
-import { StudentEntity } from './entitiers/student.entity';
+import { StudentEntity } from './entities/student.entity';
 export declare class StudentsController {
     private studentsService;
     constructor(studentsService: StudentsService);
