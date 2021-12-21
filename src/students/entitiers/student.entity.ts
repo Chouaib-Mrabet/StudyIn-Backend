@@ -1,15 +1,15 @@
 import { PrimaryGeneratedColumn, Entity, Column } from 'typeorm';
 import { TimestampEntities } from 'src/Generics/timestamp.entities';
 
-@Entity('Student')
+@Entity('student')
 export class StudentEntity extends TimestampEntities {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ length: 50 })
     firstName: string;
 
-    @Column()
+    @Column({ length: 50 })
     lastName: string;
 
     @Column({
@@ -26,8 +26,17 @@ export class StudentEntity extends TimestampEntities {
     @Column()
     password: string;
 
+    @Column()
+    title: string;
 
-    /*     @Column()
-        salt: string; */
-    //competances: CompetanceEntity[];
+    @Column()
+    description: string;
+
+    @Column()
+    location: string;
+
+    @Column()
+    rating: number;
+
+    //skills: SkillEntity[];
 }

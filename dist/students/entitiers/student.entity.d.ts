@@ -6,4 +6,8 @@ export declare class StudentEntity extends TimestampEntities {
     username: string;
     email: string;
     password: string;
+    title: string;
+    description: string;
+    location: string;
+    rating: number;
 }

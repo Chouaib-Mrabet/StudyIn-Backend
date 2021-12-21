@@ -1,10 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { StudentEntity } from './entitiers/student.entity';
 
-@Controller()
+@Controller('student')
 export class StudentsController {
     constructor(
+
         private studentsService: StudentsService
     ) {
     }
@@ -14,4 +15,12 @@ export class StudentsController {
     ): Promise<StudentEntity[]> {
         return await this.studentsService.getStudents();
     }
+    
+    @Get(":id")
+    async getStudentById(
+        @Param('id', ParseIntPipe) id: number,
+    ): Promise<StudentEntity> {
+        return await this.studentsService.findStudentById(id);
+    }
+
 }

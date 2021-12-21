@@ -19,11 +19,11 @@ __decorate([
     __metadata("design:type", Number)
 ], StudentEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ length: 50 }),
     __metadata("design:type", String)
 ], StudentEntity.prototype, "firstName", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ length: 50 }),
     __metadata("design:type", String)
 ], StudentEntity.prototype, "lastName", void 0);
 __decorate([
@@ -43,8 +43,24 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], StudentEntity.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], StudentEntity.prototype, "title", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], StudentEntity.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], StudentEntity.prototype, "location", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], StudentEntity.prototype, "rating", void 0);
 StudentEntity = __decorate([
-    (0, typeorm_1.Entity)('Student')
+    (0, typeorm_1.Entity)('student')
 ], StudentEntity);
 exports.StudentEntity = StudentEntity;
 //# sourceMappingURL=student.entity.js.map
