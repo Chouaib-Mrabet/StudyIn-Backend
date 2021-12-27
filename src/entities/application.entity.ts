@@ -1,6 +1,7 @@
-import { PrimaryGeneratedColumn, Entity, Column } from 'typeorm';
+import { PrimaryGeneratedColumn, Entity, Column, ManyToOne } from 'typeorm';
 import { TimestampEntities } from 'src/Generics/timestamp.entities';
 import { StatusEnum } from 'src/enums/status.enum';
+import { StudentEntity } from 'src/student/entities/student.entity';
 
 @Entity('application')
 export class ApplicationEntity extends TimestampEntities {
@@ -17,4 +18,6 @@ export class ApplicationEntity extends TimestampEntities {
     })
     status: string;
 
+    @ManyToOne(() => StudentEntity, student => student.experiences)
+    student: StudentEntity;
 }

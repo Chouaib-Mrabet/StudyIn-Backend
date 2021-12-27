@@ -1,5 +1,6 @@
-import { PrimaryGeneratedColumn, Entity, Column } from 'typeorm';
+import { PrimaryGeneratedColumn, Entity, Column, ManyToOne } from 'typeorm';
 import { TimestampEntities } from 'src/Generics/timestamp.entities';
+import { StudentEntity } from 'src/student/entities/student.entity';
 
 @Entity('certificate')
 export class CertificateEntity extends TimestampEntities {
@@ -14,4 +15,7 @@ export class CertificateEntity extends TimestampEntities {
 
     @Column()
     reference: string;
+
+    @ManyToOne(() => StudentEntity, student => student.experiences)
+    student: StudentEntity;
 }

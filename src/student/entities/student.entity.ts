@@ -1,5 +1,8 @@
-import { PrimaryGeneratedColumn, Entity, Column } from 'typeorm';
+import { PrimaryGeneratedColumn, Entity, Column, OneToMany } from 'typeorm';
 import { TimestampEntities } from 'src/Generics/timestamp.entities';
+import { ExperienceEntity } from 'src/entities/experience.entity';
+import { CertificateEntity } from 'src/entities/certificate.entity';
+import { ApplicationEntity } from 'src/entities/application.entity';
 
 @Entity('student')
 export class StudentEntity extends TimestampEntities {
@@ -37,6 +40,15 @@ export class StudentEntity extends TimestampEntities {
 
     @Column()
     rating: number;
+
+    @OneToMany(() => ExperienceEntity, experience => experience.student)
+    experiences: ExperienceEntity[];
+
+    @OneToMany(() => CertificateEntity, certificate => certificate.student)
+    certificates: CertificateEntity[];
+
+    @OneToMany(() => ApplicationEntity, application => application.student)
+    application: ApplicationEntity[];
 
     //skills: SkillEntity[];
 }
