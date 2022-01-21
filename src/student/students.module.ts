@@ -4,6 +4,7 @@ import { StudentEntity } from './entities/student.entity';
 import { StudentsController } from './students.controller';
 import { StudentsService } from './students.service';
 
+
 @Module({
     imports: [TypeOrmModule.forFeature([StudentEntity])],
     controllers: [StudentsController],

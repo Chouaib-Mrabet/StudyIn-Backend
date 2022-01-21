@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentEntity } from './entities/student.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class StudentsService {
@@ -9,6 +9,11 @@ export class StudentsService {
         @InjectRepository(StudentEntity)
         private studentRepository: Repository<StudentEntity>
     ) { }
+
+    async createStudent(student: StudentEntity): Promise<StudentEntity> {
+        return await this.studentRepository.save(student);
+    }
+
 
     async findStudentById(id: number) {
         const student = await this.studentRepository.findOne(id);
@@ -22,4 +27,15 @@ export class StudentsService {
     async getStudents(): Promise<StudentEntity[]> {
         return await this.studentRepository.find();
     }
+
+    async updateStudent(student: StudentEntity): Promise<UpdateResult> {
+
+        return await this.studentRepository.update(student.id,student);
+    }
+
+    async deleteStudent(id): Promise<DeleteResult> {
+        return await this.studentRepository.delete(id);
+    }
+
+
 }
