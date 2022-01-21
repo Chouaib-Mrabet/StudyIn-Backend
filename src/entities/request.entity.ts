@@ -6,7 +6,7 @@ import { StudentEntity } from 'src/student/entities/student.entity';
 @Entity('request')
 export class RequestEntity extends TimestampEntities {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number; // l'identifiant
 
     @Column()
     title: string;
