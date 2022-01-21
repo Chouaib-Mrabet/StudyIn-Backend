@@ -17,4 +17,8 @@ export class MessageEntity extends TimestampEntities {
     @ManyToOne(type => StudentEntity)
     @JoinColumn()
     sender: StudentEntity
+
+    @ManyToOne(type => StudentEntity)
+    @JoinColumn()
+    reciever: StudentEntity
 }

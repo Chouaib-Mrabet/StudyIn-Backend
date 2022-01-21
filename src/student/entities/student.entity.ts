@@ -59,7 +59,11 @@ export class StudentEntity extends TimestampEntities {
     @OneToMany(() => StudentLanguageEntity, studentLanguage => studentLanguage.student)
     studentLanguages: StudentLanguageEntity[];
 
+    @OneToMany(() => StudentLanguageEntity, studentLanguage => studentLanguage.student)
+    studentSkills: StudentLanguageEntity[];
+
+
     @OneToMany(() => PostEntity, post => post.student)
     posts: PostEntity[];
-    studentSkills: any;
+
 }
