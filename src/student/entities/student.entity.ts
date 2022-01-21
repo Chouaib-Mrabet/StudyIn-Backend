@@ -3,6 +3,9 @@ import { TimestampEntities } from 'src/Generics/timestamp.entities';
 import { ExperienceEntity } from 'src/entities/experience.entity';
 import { CertificateEntity } from 'src/entities/certificate.entity';
 import { ApplicationEntity } from 'src/entities/application.entity';
+import { ChatboxEntity } from 'src/entities/chatbox.entity';
+import { StudentLanguageEntity } from 'src/entities/student-language.entity';
+import { PostEntity } from 'src/entities/post.entity';
 
 @Entity('student')
 export class StudentEntity extends TimestampEntities {
@@ -50,5 +53,13 @@ export class StudentEntity extends TimestampEntities {
     @OneToMany(() => ApplicationEntity, application => application.student)
     application: ApplicationEntity[];
 
-    //skills: SkillEntity[];
+    @OneToMany(() => ChatboxEntity, chatbox => chatbox.student1)
+    chatboxs: ChatboxEntity[];
+
+    @OneToMany(() => StudentLanguageEntity, studentLanguage => studentLanguage.student)
+    studentLanguages: StudentLanguageEntity[];
+
+    @OneToMany(() => PostEntity, post => post.student)
+    posts: PostEntity[];
+    studentSkills: any;
 }

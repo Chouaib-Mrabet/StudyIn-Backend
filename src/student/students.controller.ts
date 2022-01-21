@@ -22,5 +22,4 @@ export class StudentsController {
     ): Promise<StudentEntity> {
         return await this.studentsService.findStudentById(id);
     }
-
 }

@@ -1,5 +1,6 @@
-import { PrimaryGeneratedColumn, Entity, Column } from 'typeorm';
+import { PrimaryGeneratedColumn, Entity, Column, OneToMany } from 'typeorm';
 import { TimestampEntities } from 'src/Generics/timestamp.entities';
+import { StudentLanguageEntity } from './student-language.entity';
 
 @Entity('language')
 export class LanguageEntity extends TimestampEntities {
@@ -11,4 +12,7 @@ export class LanguageEntity extends TimestampEntities {
         unique: true,
     })
     name: string;
+
+    @OneToMany(() => StudentLanguageEntity, studentLanguage => studentLanguage.language)
+    studentLanguages: StudentLanguageEntity[];
 }
