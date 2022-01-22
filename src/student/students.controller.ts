@@ -5,7 +5,6 @@ import { StudentEntity } from './entities/student.entity';
 @Controller('student')
 export class StudentsController {
     constructor(
-
         private studentsService: StudentsService
     ) {
     }
@@ -15,7 +14,7 @@ export class StudentsController {
     ): Promise<StudentEntity[]> {
         return await this.studentsService.getStudents();
     }
-    
+
     @Get(":id")
     async getStudentById(
         @Param('id', ParseIntPipe) id: number,
@@ -24,19 +23,26 @@ export class StudentsController {
     }
 
     @Post('create')
-    async create(@Body() student: StudentEntity): Promise<any> {
-      return this.studentsService.createStudent(student);
-    }  
-    
+    async create(
+        @Body() student: StudentEntity
+    ): Promise<any> {
+        return this.studentsService.createStudent(student);
+    }
+
     @Put(':id/update')
-    async update(@Param('id') id, @Body() student: StudentEntity): Promise<any> {
+    async update(
+        @Param('id') id,
+        @Body() student: StudentEntity
+    ): Promise<any> {
         student.id = Number(id);
         return this.studentsService.updateStudent(student);
-    }  
-    
+    }
+
     @Delete(':id/delete')
-    async delete(@Param('id') id): Promise<any> {
-      return this.studentsService.deleteStudent(id);
+    async delete(
+        @Param('id') id
+    ): Promise<any> {
+        return this.studentsService.deleteStudent(id);
     }
 
 
