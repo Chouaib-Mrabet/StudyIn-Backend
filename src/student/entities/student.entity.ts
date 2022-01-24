@@ -6,6 +6,7 @@ import { ApplicationEntity } from 'src/entities/application.entity';
 import { ChatboxEntity } from 'src/entities/chatbox.entity';
 import { StudentLanguageEntity } from 'src/entities/student-language.entity';
 import { PostEntity } from 'src/entities/post.entity';
+import { StudentSkillEntity } from 'src/entities/student-skill.entity';
 
 @Entity('student')
 export class StudentEntity extends TimestampEntities {
@@ -59,9 +60,8 @@ export class StudentEntity extends TimestampEntities {
     @OneToMany(() => StudentLanguageEntity, studentLanguage => studentLanguage.student)
     studentLanguages: StudentLanguageEntity[];
 
-    @OneToMany(() => StudentLanguageEntity, studentLanguage => studentLanguage.student)
+    @OneToMany(() => StudentSkillEntity, studentSkill => studentSkill.student)
     studentSkills: StudentLanguageEntity[];
-
 
     @OneToMany(() => PostEntity, post => post.student)
     posts: PostEntity[];

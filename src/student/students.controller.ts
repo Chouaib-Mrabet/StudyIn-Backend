@@ -2,8 +2,10 @@ import { Controller, Get, Param, ParseIntPipe, DefaultValuePipe, Query } from '@
 import { StudentsService } from './students.service';
 import { StudentEntity } from './entities/student.entity';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { Observable, of } from 'rxjs';
 
-@Controller('student')
+
+@Controller('students')
 export class StudentsController {
     constructor(
 
@@ -18,18 +20,23 @@ export class StudentsController {
     }
 
     @Get('paginate')
-    async index(
-        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
-        @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
-    ): Promise<Pagination<StudentEntity>> {
+    index(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Query('username') username: string
+    ): Observable<Pagination<StudentEntity>> {
         limit = limit > 100 ? 100 : limit;
-        return this.studentsService.paginate({
-            page,
-            limit,
-            route: 'http://localhost:3000/student',
-        });
-    }
 
+        if (username === null || username === undefined) {
+            return this.studentsService.paginate({ page: Number(page), limit: Number(limit), route: 'http://localhost:3000/students' });
+        } else {
+
+            return this.studentsService.paginateFilterByUsername(
+                { page: Number(page), limit: Number(limit), route: 'http://localhost:3000/students' },
+                { username }
+            )
+        }
+    }
 
     @Get(":id")
     async getStudentById(

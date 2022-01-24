@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentEntity } from './entities/student.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { paginate, Pagination, IPaginationOptions, } from 'nestjs-typeorm-paginate';
+import { Observable, from, throwError } from 'rxjs';
+import { switchMap, map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class StudentsService {
@@ -24,7 +26,76 @@ export class StudentsService {
         return await this.studentRepository.find();
     }
 
-    async paginate(options: IPaginationOptions): Promise<Pagination<StudentEntity>> {
-        return paginate<StudentEntity>(this.studentRepository, options);
+    paginate(options: IPaginationOptions): Observable<Pagination<StudentEntity>> {
+        return from(paginate<StudentEntity>(this.studentRepository, options)).pipe(
+            map((usersPageable: Pagination<StudentEntity>) => {
+                usersPageable.items.forEach(function (v) { delete v.password });
+                return usersPageable;
+            })
+        )
+    }
+
+    paginateFilterByUsername(options: IPaginationOptions, student: any): Observable<Pagination<StudentEntity>> {
+        return from(this.studentRepository.findAndCount({
+            skip: Number(options.page) * Number(options.limit) || 0,
+            take: Number(options.limit) || 10,
+            order: { id: "DESC" },
+            select: ['id', 'firstName', 'lastName', 'username', 'email', 'title', 'description', 'location', 'rating'],
+            where: [
+                { username: Like(`%${student.username}%`) }
+            ]
+        })).pipe(
+            map(([students, totalStudents]) => {
+                const studentsPageable: Pagination<StudentEntity> = {
+                    items: students,
+                    links: {
+                        first: options.route + `?limit=${options.limit}`,
+                        previous: options.route + ``,
+                        next: options.route + `?limit=${options.limit}&page=${Number(options.page) + 1}`,
+                        last: options.route + `?limit=${options.limit}&page=${Math.ceil(totalStudents / Number(options.limit))}`
+                    },
+                    meta: {
+                        currentPage: Number(options.page),
+                        itemCount: students.length,
+                        itemsPerPage: Number(options.limit),
+                        totalItems: totalStudents,
+                        totalPages: Math.ceil(totalStudents / Number(options.limit))
+                    }
+                };
+                return studentsPageable;
+            })
+        )
+    }
+
+    paginateFilterByTitle(options: IPaginationOptions, student: StudentEntity): Observable<Pagination<StudentEntity>> {
+        return from(this.studentRepository.findAndCount({
+            skip: Number(options.page) * Number(options.limit) || 0,
+            take: Number(options.limit) || 10,
+            order: { rating: "DESC" },
+            select: ['id', 'firstName', 'lastName', 'username', 'email', 'title', 'description', 'location', 'rating'],
+            where: [
+                { title: Like(`%${student.title}%`) }
+            ]
+        })).pipe(
+            map(([students, totalStudents]) => {
+                const studentsPageable: Pagination<StudentEntity> = {
+                    items: students,
+                    links: {
+                        first: options.route + `?limit=${options.limit}`,
+                        previous: options.route + ``,
+                        next: options.route + `?limit=${options.limit}&page=${Number(options.page) + 1}`,
+                        last: options.route + `?limit=${options.limit}&page=${Math.ceil(totalStudents / Number(options.limit))}`
+                    },
+                    meta: {
+                        currentPage: Number(options.page),
+                        itemCount: students.length,
+                        itemsPerPage: Number(options.limit),
+                        totalItems: totalStudents,
+                        totalPages: Math.ceil(totalStudents / Number(options.limit))
+                    }
+                };
+                return studentsPageable;
+            })
+        )
     }
 }
