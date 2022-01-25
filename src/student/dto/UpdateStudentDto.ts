@@ -16,7 +16,6 @@ export declare class UpdateStudentDto {
     @IsEmail()
     email: string;
 
-
     @IsString()
     title: string;
 

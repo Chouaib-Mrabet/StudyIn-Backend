@@ -20,19 +20,18 @@ export class StudentsController {
         return await this.studentsService.getStudents();
     }
 
-    @Get(":id")
-    async getStudentById(
-        @Param('id', ParseIntPipe) id: number,
-    ): Promise<StudentEntity> {
-        return await this.studentsService.findStudentById(id);
-    }
-
-
     @Post()
     async createStudent(
         @Body() student: CreateStudentDto
     ): Promise<any> {
         return this.studentsService.createStudent(student);
+    }
+
+    @Get(":id")
+    async getStudentById(
+        @Param('id', ParseIntPipe) id: number,
+    ): Promise<StudentEntity> {
+        return await this.studentsService.findStudentById(id);
     }
 
     @Put(':id')
@@ -45,7 +44,7 @@ export class StudentsController {
 
     @Delete(':id')
     async deleteStudent(
-        @Param('id') id
+        @Param('id', ParseIntPipe) id
     ): Promise<any> {
         return this.studentsService.deleteStudent(id);
     }
@@ -79,7 +78,5 @@ export class StudentsController {
                 )
             }
         } */
-
-
 
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentEntity } from './entities/student.entity';
 import { Repository, Like } from 'typeorm';
@@ -20,8 +20,9 @@ export class StudentsService {
         return await this.studentRepository.find();
     }
 
-    async findStudentById(id: number) {
+    async findStudentById(id: number): Promise<StudentEntity> {
         const student = await this.studentRepository.findOne(id);
+
         if (!student) {
             throw new NotFoundException(`L'etudiant d'id ${id} n'existe pas`);
         }
@@ -34,9 +35,13 @@ export class StudentsService {
             ...student
         });
 
-        return await this.studentRepository.save(user);
+        try {
+            return await this.studentRepository.save(user);
+        }
+        catch (e) {
+            throw new ConflictException(`Le username et l'email doivent etre unique`);
+        }
     }
-
 
     async updateStudent(id: number, student: UpdateStudentDto): Promise<StudentEntity> {
         const newStudent = await this.studentRepository.preload({
