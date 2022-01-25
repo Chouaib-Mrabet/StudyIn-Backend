@@ -13,12 +13,6 @@ export class StudentsController {
     ) {
     }
 
-    @Get()
-    async getAllStudents(
-    ): Promise<StudentEntity[]> {
-        return await this.studentsService.getStudents();
-    }
-
     @Get('paginate')
     index(
         @Query('page') page: number = 1,
@@ -45,5 +39,10 @@ export class StudentsController {
         return await this.studentsService.findStudentById(id);
     }
 
+    @Get()
+    async getAllStudents(
+    ): Promise<StudentEntity[]> {
+        return await this.studentsService.getStudents();
+    }
 
 }
