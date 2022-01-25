@@ -13,7 +13,19 @@ export class StudentsController {
     ) {
     }
 
+
     @Get('paginate')
+    index(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+    ): Observable<Pagination<StudentEntity>> {
+        limit = limit > 100 ? 100 : limit;
+
+        return this.studentsService.paginate({ page: Number(page), limit: Number(limit), route: 'http://localhost:3000/students' });
+    }
+
+
+/*     @Get('paginate')
     index(
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
@@ -30,7 +42,7 @@ export class StudentsController {
                 { username }
             )
         }
-    }
+    } */
 
     @Get(":id")
     async getStudentById(
