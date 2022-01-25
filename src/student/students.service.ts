@@ -5,13 +5,20 @@ import { Repository, Like } from 'typeorm';
 import { paginate, Pagination, IPaginationOptions, } from 'nestjs-typeorm-paginate';
 import { Observable, from, throwError } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
+import { CreateStudentDto } from './dto/CreateStudentDto';
+import { UpdateStudentDto } from './dto/UpdateStudentDto';
 
 @Injectable()
 export class StudentsService {
+
     constructor(
         @InjectRepository(StudentEntity)
         private studentRepository: Repository<StudentEntity>
     ) { }
+
+    async getStudents(): Promise<StudentEntity[]> {
+        return await this.studentRepository.find();
+    }
 
     async findStudentById(id: number) {
         const student = await this.studentRepository.findOne(id);
@@ -22,8 +29,30 @@ export class StudentsService {
         return student;
     }
 
-    async getStudents(): Promise<StudentEntity[]> {
-        return await this.studentRepository.find();
+    async createStudent(student: CreateStudentDto): Promise<StudentEntity> {
+        const user = this.studentRepository.create({
+            ...student
+        });
+
+        return await this.studentRepository.save(user);
+    }
+
+
+    async updateStudent(id: number, student: UpdateStudentDto): Promise<StudentEntity> {
+        const newStudent = await this.studentRepository.preload({
+            id,
+            ...student
+        });
+
+        if (!newStudent) {
+            throw new NotFoundException(`Le student d'id ${id} n'existe pas`);
+        }
+
+        return await this.studentRepository.save(newStudent);
+    }
+
+    async deleteStudent(id: number) {
+        return await this.studentRepository.delete(id);
     }
 
     paginate(options: IPaginationOptions): Observable<Pagination<StudentEntity>> {
