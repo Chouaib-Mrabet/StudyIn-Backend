@@ -6,12 +6,14 @@ import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import * as dotenv from 'dotenv';
+import { StudentEntity } from "./student/entities/student.entity";
 
 dotenv.config();
 
 @Module({
   imports: [
     StudentsModule,
+    StudentEntity,
 
     ConfigModule.forRoot({
       isGlobal: true

@@ -44,6 +44,9 @@ export class StudentEntity extends TimestampEntities {
     @Column()
     rating: number;
 
+    @Column()
+    salt: string;
+
     @OneToMany(() => ExperienceEntity, experience => experience.student)
     experiences: ExperienceEntity[];
 
