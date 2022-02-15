@@ -59,24 +59,23 @@ export class StudentsController {
         return this.studentsService.paginate({ page: Number(page), limit: Number(limit), route: 'http://localhost:3000/students' });
     }
 
+    @Get('paginate2')
+    index(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Query('username') username: string
+    ): Observable<Pagination<StudentEntity>> {
+        limit = limit > 100 ? 100 : limit;
 
-    /*     @Get('paginate')
-        index(
-            @Query('page') page: number = 1,
-            @Query('limit') limit: number = 10,
-            @Query('username') username: string
-        ): Observable<Pagination<StudentEntity>> {
-            limit = limit > 100 ? 100 : limit;
-    
-            if (username === null || username === undefined) {
-                return this.studentsService.paginate({ page: Number(page), limit: Number(limit), route: 'http://localhost:3000/students' });
-            } else {
-    
-                return this.studentsService.paginateFilterByUsername(
-                    { page: Number(page), limit: Number(limit), route: 'http://localhost:3000/students' },
-                    { username }
-                )
-            }
-        } */
+        if (username === null || username === undefined) {
+            return this.studentsService.paginate({ page: Number(page), limit: Number(limit), route: 'http://localhost:3000/students' });
+        } else {
+
+            return this.studentsService.paginateFilterByUsername(
+                { page: Number(page), limit: Number(limit), route: 'http://localhost:3000/students' },
+                { username }
+            )
+        }
+    }
 
 }
